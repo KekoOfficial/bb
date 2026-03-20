@@ -9,11 +9,12 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.z = 10;
 
+// Renderizador
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// Controles
+// Controles de cámara
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
@@ -21,14 +22,14 @@ controls.enableDamping = true;
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xFFD700, 1); // amarillo suave
+const directionalLight = new THREE.DirectionalLight(0xFFEB3B, 1); // amarillo suave
 directionalLight.position.set(5,10,7);
 scene.add(directionalLight);
 
-// Flores estilo Army
+// Crear flores 3D estilo Army BTS
 const flowers = [];
 for (let i = 0; i < 50; i++) {
-  const geometry = new THREE.ConeGeometry(0.2, 0.5, 6); // pétalos estilizados tipo geometría
+  const geometry = new THREE.ConeGeometry(0.2, 0.5, 6); // pétalos estilizados
   const material = new THREE.MeshStandardMaterial({ color: 0xFFEB3B, flatShading: true });
   const flower = new THREE.Mesh(geometry, material);
   flower.position.set((Math.random()-0.5)*15, Math.random()*5-1, (Math.random()-0.5)*15);
@@ -38,20 +39,20 @@ for (let i = 0; i < 50; i++) {
   flowers.push(flower);
 }
 
-// Animación elegante
+// Animación suave
 function animate() {
   requestAnimationFrame(animate);
   flowers.forEach(f => {
     f.rotation.y += 0.005;
     f.position.y += Math.sin(Date.now() * 0.001 + f.position.x) * 0.0015;
-    if (f.position.y > 5) f.position.y = -2;
+    if (f.position.y > 5) f.position.y = -2; // ciclo infinito
   });
   controls.update();
   renderer.render(scene, camera);
 }
 animate();
 
-// Ajuste ventana
+// Ajuste de ventana
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth/window.innerHeight;
   camera.updateProjectionMatrix();
